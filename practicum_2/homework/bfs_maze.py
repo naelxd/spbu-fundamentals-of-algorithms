@@ -1,4 +1,5 @@
 from time import perf_counter
+from queue import Queue
 
 
 class Maze:
@@ -17,6 +18,9 @@ class Maze:
                 list_view.append(list(l.strip()))
         obj = cls(list_view)
         return obj
+
+    def is_end(self, i: int, j: int) -> bool:
+        return self.list_view[i][j] == "X"
 
     def print(self, path="") -> None:
         # Find the path coordinates
@@ -39,13 +43,38 @@ class Maze:
 def solve(maze: Maze) -> None:
     path = ""  # solution as a string made of "L", "R", "U", "D"
 
-    ##########################
-    ### PUT YOUR CODE HERE ###
-    ##########################
+    queue = Queue()
+    queue.put(path)
+    i_size, j_size = len(maze.list_view), len(maze.list_view[0])
+    is_visited = [[False] * j_size for _ in range(i_size)]
+
+    while not queue.empty():
+        path = queue.get()
+
+        i, j = get_new_coords(0, maze.start_j, path)
+
+        if (i > i_size - 1 or j > j_size - 1) or (i, j) == (-1, -1) or is_visited[i][j]:
+            continue
+
+        is_visited[i][j] == True
+
+        if maze.is_end(i, j):
+            break
+
+        if maze.list_view[i][j] != '#':
+            for way in 'L', 'R', 'U', 'D':
+                queue.put(path + way)
 
     print(f"Found: {path}")
     maze.print(path)
 
+def get_new_coords(i: int, j: int, path: str) -> tuple[int, int]:
+    for way in path:
+        new_i, new_j = _shift_coordinate(i, j, way)
+        if new_i < 0 or new_j < 0:
+            return (-1, -1)
+        i, j = new_i, new_j
+    return (i, j)
 
 def _shift_coordinate(i: int, j: int, move: str) -> tuple[int, int]:
     if move == "L":
