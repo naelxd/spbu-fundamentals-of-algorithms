@@ -33,9 +33,13 @@ def topological_sort(G: nx.DiGraph, node: Any):
 
     q = queue.LifoQueue()
 
+    while list(G.predecessors(node)):
+        node = list(G.predecessors(node))[0]
+
     q.put(node)
 
     while not q.empty():
+        # TODO
         current_node = q.get()
 
         predecessors = [n for n in G.predecessors(current_node) if not visited[n]]
@@ -56,11 +60,11 @@ if __name__ == "__main__":
     # Load and plot the graph
     graph_filename = "practicum_2/homework/graph_2.edgelist"
     G = nx.read_edgelist(graph_filename, create_using=nx.Graph)
-    # plot_graph(G)
+    plot_graph(G)
 
     print("Iterative DFS")
     print("-" * 32)
-    dfs_iterative(G, node="0")
+    dfs_iterative(G, node="2")
     print()
 
     G = nx.read_edgelist(
@@ -69,4 +73,4 @@ if __name__ == "__main__":
     plot_graph(G)
     print("Topological sort")
     print("-" * 32)
-    topological_sort(G, node="0")
+    topological_sort(G, node="3")
