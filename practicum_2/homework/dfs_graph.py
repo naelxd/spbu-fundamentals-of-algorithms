@@ -39,7 +39,6 @@ def topological_sort(G: nx.DiGraph, node: Any):
     q.put(node)
 
     while not q.empty():
-        # TODO
         current_node = q.get()
 
         predecessors = [n for n in G.predecessors(current_node) if not visited[n]]
