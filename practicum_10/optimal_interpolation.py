@@ -5,25 +5,35 @@ import matplotlib.pyplot as plt
 
 
 def lagrange_basis(i: int, x: float, x_nodes: NDArray):
-    ##########################
-    ### PUT YOUR CODE HERE ###
-    ##########################
-    pass
+    res1 = 1
+    res2 = 1
+    for j in range(len(x_nodes)):
+        if (j == i):
+            continue
+        res1 *= (x - x_nodes[j])
+        res2 *= (x_nodes[i] - x_nodes[j])
 
+    return res1/res2
 
 def lagrange_interpolant(x: float, x_nodes: NDArray, y_nodes: NDArray):
-    ##########################
-    ### PUT YOUR CODE HERE ###
-    ##########################
-    pass
+    li = np.empty(y_nodes.shape)
+    for i in range(len(x_nodes)):
+        li[i] = lagrange_basis(i, x, x_nodes)
 
+    return y_nodes @ li
 
 def plot_data_and_interpolant(x_nodes: NDArray, f: Callable[[float], float]):
-    ##########################
-    ### PUT YOUR CODE HERE ###
-    ##########################
-    pass
-
+    lnsp = np.linspace(x_nodes[0], x_nodes[-1], x_nodes.size * 10) 
+    y_nodes = f(lnsp)
+    y_interpolate = []
+    for i in range(len(lnsp)):
+        y_interpolate.append(lagrange_interpolant(lnsp[i], lnsp, y_nodes))
+    fig, ax = plt.subplots(figsize=(12, 6))
+    ax.plot(lnsp, y_nodes, "o")
+    ax.plot(lnsp, y_interpolate, "-")
+    ax.grid()
+    fig.tight_layout()
+    plt.show()
 
 def runge_func(x: float) -> float:
     return 1.0 / (1 + 25 * x**2)
@@ -39,10 +49,6 @@ if __name__ == "__main__":
     plot_data_and_interpolant(x_equi_nodes, runge_func)
 
     # Optimally located nodes
+    # Chebishovskiye uzli
 
-    ##########################
-    ### PUT YOUR CODE HERE ###
-    ##########################
-
-    x_opt_nodes = None  # should be filled
-    plot_data_and_interpolant(x_opt_nodes, runge_func)
+    # plot_data_and_interpolant(x_opt_nodes, runge_func)

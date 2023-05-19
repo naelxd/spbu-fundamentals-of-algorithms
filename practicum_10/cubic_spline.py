@@ -4,17 +4,31 @@ import matplotlib.pyplot as plt
 
 
 def qubic_spline_coeff(x_nodes: NDArray, y_nodes: NDArray) -> NDArray:
-    ##########################
-    ### PUT YOUR CODE HERE ###
-    ##########################
-    pass
-
+    hi = [x_nodes[i+1] - x_nodes[i] for i in range(x_nodes.size - 1)]
+    b = [(3/hi[i])*(y_nodes[i+1] - y_nodes[i]) - (3/hi[i-1])*(y_nodes[i] - y_nodes[i-1]) if 0 < i < x_nodes.size - 2 else 0 for i in range(x_nodes.size)]
+    a = np.zeros((x_nodes.size, x_nodes.size)) 
+    a[0, 0] = 1
+    a[x_nodes.size-1, x_nodes.size-1] = 1
+    for i in range(1, x_nodes.size-1):
+        a[i][i-1] = hi[i-1]
+        a[i][i] = 2*(hi[i] + hi[i-1])
+        a[i][i+1] = hi[i]
+    a_inv = np.linalg.inv(a)
+    ci = a_inv @ np.array(b)
+    di = [(ci[i+1] - ci[i]) / (3 * hi[i]) for i in range(x_nodes.size - 1)]
+    bi = [(y_nodes[i+1] - y_nodes[i]) / hi[i] - ((hi[i] / 3) * (ci[i+1] + 2*ci[i])) for i in range(x_nodes.size)]
+    print(len(bi), ci.shape, len(di))
+    return np.concatenate((y_nodes, bi, ci, di), axis=1)
 
 def qubic_spline(x: float, x_nodes: NDArray, qs_coeff: NDArray) -> float:
-    ##########################
-    ### PUT YOUR CODE HERE ###
-    ##########################
-    pass
+    for i in range(x_nodes.size):
+        if x < x_nodes[i]:
+            break
+    i -= 1
+
+    return (qs_coeff[i][0] + qw_coeff[i][1] * (x - x_nodes[i]) + 
+            qw_coeff[i][2] * (x - x_nodes[i])**2 + 
+            qw_coeff[i][3] * (x - x_nodes[i])**3)
 
 
 if __name__ == "__main__":
