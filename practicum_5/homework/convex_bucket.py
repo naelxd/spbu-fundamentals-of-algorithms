@@ -16,9 +16,9 @@ def convex_bucket(points: NDArray) -> NDArray:
     sorted_points_by_x = sorted(points, key=lambda x: (x[0], x[1]))
 
     for point in reversed(sorted_points_by_x):
-        while len(clockwise_sorted_ch) >= 2 and not is_clockwise_turn(clockwise_sorted_ch[-2],
-                                                                      point,
-                                                                      clockwise_sorted_ch[-1]):
+        while (len(clockwise_sorted_ch) >= 2 and 
+               not is_clockwise_turn(clockwise_sorted_ch[-2], 
+                                     point, clockwise_sorted_ch[-1])):
             clockwise_sorted_ch.pop(-1)
         clockwise_sorted_ch.append(point)
 

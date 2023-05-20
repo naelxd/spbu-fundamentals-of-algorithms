@@ -19,7 +19,7 @@ def prim_mst(G: nx.Graph, start_node="0") -> set[tuple[Any, Any]]:
 
     pq = PriorityQueue()
 
-    new_node = '0'
+    new_node = start_node 
     while rest_set: 
         # Adding new edges
         for node_neighbor in G.neighbors(new_node):

@@ -20,6 +20,8 @@ def lu(A: NDArray, permute: bool) -> tuple[NDArray, NDArray, NDArray]:
                 U[i][j] = (P @ A)[i][j] - (L[i, :] @ U[:, j])
             else:
                 L[i][j] = ((P @ A)[i][j] - (L[i, :] @ U[:, j])) / U[j][j]
+    print(A)
+    print(L @ U)
 
     return L, U, P
     

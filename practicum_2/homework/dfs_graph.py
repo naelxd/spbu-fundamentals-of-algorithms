@@ -35,6 +35,7 @@ def topological_sort(G: nx.DiGraph, node: Any):
 
     while list(G.predecessors(node)):
         node = list(G.predecessors(node))[0]
+        print(node)
 
     q.put(node)
 

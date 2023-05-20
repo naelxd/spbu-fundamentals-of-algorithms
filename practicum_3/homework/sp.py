@@ -13,7 +13,7 @@ def dijkstra_sp(G: nx.Graph, source_node="0") -> dict[Any, list[Any]]:
 
     for node in G.nodes():
         distances[node] = np.inf
-        shortest_paths[node] = ["0"]
+        shortest_paths[node] = [source_node]
         nodes_to_visit.append(node)
 
     distances[source_node] = 0
